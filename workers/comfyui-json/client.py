@@ -16,7 +16,7 @@ ENDPOINT_NAME = "my-comfyui-endpoint"
 DEFAULT_WIDTH = 512
 DEFAULT_HEIGHT = 512
 DEFAULT_STEPS = 20
-COST = 100  # Fixed cost for ComfyUI requests
+COST = 200  # Fixed cost for ComfyUI requests
 
 # Optional S3 Configuration (from environment variables)
 S3_ENDPOINT_URL = os.getenv("S3_ENDPOINT_URL")
