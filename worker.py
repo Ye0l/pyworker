@@ -17,7 +17,7 @@ MODEL_LOG_FILE             = '/var/log/portal/comfyui.log'
 MODEL_HEALTHCHECK_ENDPOINT = "/health"
 
 # 결과물을 전송받을 웹훅(n8n, 커스텀 API 등)의 POST URL을 입력하세요.
-TARGET_WEBHOOK_URL = "http://여러분의_엔드포인트_주소:포트/webhook"
+TARGET_WEBHOOK_URL = "https://n8n.kstr.dev/webhook/vast/complete"
 
 # ComfyUI가 이미지를 저장하는 컨테이너 내부 디스크 경로
 COMFY_OUTPUT_DIR = "/workspace/ComfyUI/output"
