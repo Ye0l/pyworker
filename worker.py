@@ -64,7 +64,7 @@ worker_config = WorkerConfig(
     handlers=[
         HandlerConfig(
             route="/generate/sync",
-            allow_parallel_requests=True,
+            allow_parallel_requests=False,
             max_queue_time=100.0,
             workload_calculator=lambda payload: 250.0,
             benchmark_config=BenchmarkConfig(
