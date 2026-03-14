@@ -53,7 +53,7 @@ async def custom_response_generator(client_request: web.Request, model_response:
             # 디스크에서 이미지를 읽어 WebP Base64로 압축 후 기존 응답 데이터에 삽입
             if os.path.exists(filepath):
                 webp_b64 = convert_to_webp_base64(filepath, quality=80)
-                resp_data['image_webp_base64'] = webp_b64
+                resp_data['images'] = webp_b64
                 
                 # 삽입한 데이터로 HTTP Body 덮어쓰기
                 body = json.dumps(resp_data).encode('utf-8')
@@ -115,8 +115,7 @@ worker_config = WorkerConfig(
             max_queue_time=100.0,
             response_generator=custom_response_generator,  # <-- 콜백 연결
             benchmark_config=BenchmarkConfig(
-                dataset=benchmark_dataset,
-                concurrency=1
+                dataset=benchmark_dataset
             )
         )
     ],
