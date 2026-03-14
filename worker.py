@@ -84,7 +84,7 @@ def extract_filename(response_data: dict):
         pass
     return None
 
-def convert_to_webp_base64(filepath: str, quality: int = 80) -> str:
+def convert_to_webp_base64(filepath: str, quality: int = 87) -> str:
     """로컬 이미지를 읽어 WebP로 압축한 뒤 Base64 문자열로 반환합니다."""
     img = Image.open(filepath)
     buffer = io.BytesIO()
@@ -105,7 +105,7 @@ async def custom_response_generator(client_request: web.Request, model_response:
             
             # 로컬 디스크에서 이미지를 바로 읽어 WebP로 압축
             if os.path.exists(filepath):
-                webp_b64 = convert_to_webp_base64(filepath, quality=80)
+                webp_b64 = convert_to_webp_base64(filepath, quality=87)
                 
                 # POST로 전송할 JSON 페이로드 구성
                 payload = {
@@ -126,7 +126,6 @@ async def custom_response_generator(client_request: web.Request, model_response:
 
     # 원래 클라이언트(API 호출자)에게 보낼 HTTP 응답을 정상적으로 조립해서 리턴
     headers = model_response.headers.copy()
-    headers.pop("Content-Type", None)
     return web.Response(
         body=body,
         status=model_response.status,
