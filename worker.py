@@ -47,9 +47,9 @@ benchmark_dataset = [
             "modifier": "Text2Image",
             "modifications": {
                 "prompt": prompt,
-                "width": 512,
-                "height": 512,
-                "steps": 20,
+                "width": 896,
+                "height": 1152,
+                "steps": 80,
                 "seed": random.randint(0, sys.maxsize)
             }
         }
@@ -66,7 +66,7 @@ worker_config = WorkerConfig(
             route="/generate/sync",
             allow_parallel_requests=True,
             max_queue_time=100.0,
-            workload_calculator=lambda payload: 200.0,
+            workload_calculator=lambda payload: 250.0,
             benchmark_config=BenchmarkConfig(
                 dataset=benchmark_dataset,
             )
