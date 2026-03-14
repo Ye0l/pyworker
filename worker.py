@@ -66,6 +66,7 @@ worker_config = WorkerConfig(
             route="/generate/sync",
             allow_parallel_requests=True,
             max_queue_time=100.0,
+            workload_calculator=lambda payload: 200.0,
             benchmark_config=BenchmarkConfig(
                 dataset=benchmark_dataset,
             )
