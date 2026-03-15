@@ -80,17 +80,11 @@ worker_config = WorkerConfig(
         HandlerConfig(
             route="/generate/sync",
             allow_parallel_requests=False,
-            max_queue_time=300.0,
+            max_queue_time=900.0,
             response_generator=custom_response_generator,
             benchmark_config=BenchmarkConfig(
                 dataset=benchmark_dataset,
             )
-        ),
-        HandlerConfig(
-            route="/generate",
-            allow_parallel_requests=True,
-            max_queue_time=300.0,
-            response_generator=custom_response_generator
         )
     ],
     log_action_config=LogActionConfig(
