@@ -31,8 +31,8 @@ async def custom_response_generator(
                     
                     if os.path.exists(original_path):
                         with Image.open(original_path) as img:
-                            img.save(webp_path, format='WEBP')
-                        print(f"[DEBUG] Image saved to webp: {webp_path}")
+                            img.save(webp_path, format='WEBP', quality=87)
+                        print(f"[DEBUG] Image saved to webp (quality=87): {webp_path}")
                         
                         with open(webp_path, "rb") as image_file:
                             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
