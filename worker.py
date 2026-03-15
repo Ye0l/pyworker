@@ -48,9 +48,7 @@ async def custom_response_generator(
                         print(f"[DEBUG] ERROR: File not found at {original_path}")
             
             if modified:
-                data_bytes = json.dumps(data).encode('utf-8')
-                
-                # CALLBACK_POST_URL이 설정되어 있으면 데이터 전송
+                # 1. CALLBACK_POST_URL이 설정되어 있으면 원본 데이터(base64 포함) 전송
                 if CALLBACK_POST_URL:
                     try:
                         async with aiohttp.ClientSession() as session:
@@ -58,6 +56,15 @@ async def custom_response_generator(
                                 print(f"[DEBUG] Callback sent to {CALLBACK_POST_URL}. Status: {resp.status}")
                     except Exception as e:
                         print(f"[DEBUG] Failed to send callback: {str(e)}")
+                
+                # 2. 클라이언트 응답용 데이터에서 base64 제거 (용량 최적화)
+                for item in data['output']:
+                    if isinstance(item, dict) and 'image_base64' in item:
+                        del item['image_base64']
+                
+                # 3. 최종 가공된(base64가 제거된) 데이터를 bytes로 변환하여 리턴용으로 사용
+                data_bytes = json.dumps(data).encode('utf-8')
+                print(f"[DEBUG] Client response prepared (base64 removed). Final length: {len(data_bytes)}")
         else:
             print(f"[DEBUG] 'output' list not found or not a list.")
             
