@@ -14,26 +14,40 @@ async def custom_response_generator(
     model_response: ClientResponse,
 ) -> Union[web.Response, web.StreamResponse]:
     data_bytes = await model_response.read()
+    print(f"[DEBUG] Received data length: {len(data_bytes)}")
     
     try:
         data = json.loads(data_bytes)
+        print(f"[DEBUG] JSON parsed successfully. Keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
+        
         if isinstance(data, dict) and 'local_path' in data:
             original_path = data['local_path']
             webp_path = os.path.splitext(original_path)[0] + '.webp'
+            print(f"[DEBUG] Found local_path: {original_path}")
+            print(f"[DEBUG] Target webp_path: {webp_path}")
             
-            with Image.open(original_path) as img:
-                img.save(webp_path, format='WEBP')
+            if os.path.exists(original_path):
+                with Image.open(original_path) as img:
+                    img.save(webp_path, format='WEBP')
+                print(f"[DEBUG] Image saved to webp successfully.")
+                
+                # WebP 이미지를 base64로 인코딩
+                with open(webp_path, "rb") as image_file:
+                    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                print(f"[DEBUG] Base64 encoding successful. Length: {len(encoded_string)}")
+                
+                data['image'] = webp_path
+                data['image_base64'] = encoded_string
+                data_bytes = json.dumps(data).encode('utf-8')
+            else:
+                print(f"[DEBUG] ERROR: original_path does not exist: {original_path}")
+        else:
+            print(f"[DEBUG] local_path not found in data or data is not a dict.")
             
-            # WebP 이미지를 base64로 인코딩
-            with open(webp_path, "rb") as image_file:
-                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-            
-            data['image'] = webp_path
-            data['image_base64'] = encoded_string
-            data_bytes = json.dumps(data).encode('utf-8')
-    except (json.JSONDecodeError, KeyError, Exception):
-        # JSON이 아니거나 에러가 발생하면 처리하지 않고 원본 데이터 전송
-        pass
+    except json.JSONDecodeError:
+        print(f"[DEBUG] JSONDecodeError: Failed to parse data as JSON.")
+    except Exception as e:
+        print(f"[DEBUG] Exception occurred: {str(e)}")
 
     return web.Response(
         body=data_bytes,
