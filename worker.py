@@ -42,7 +42,8 @@ async def custom_response_generator(
             else:
                 print(f"[DEBUG] ERROR: original_path does not exist: {original_path}")
         else:
-            print(f"[DEBUG] local_path not found in data or data is not a dict.")
+            print(f"[DEBUG] local_path not found in top-level. Full data content for debugging:")
+            print(json.dumps(data, indent=2))
             
     except json.JSONDecodeError:
         print(f"[DEBUG] JSONDecodeError: Failed to parse data as JSON.")
