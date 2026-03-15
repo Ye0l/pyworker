@@ -3,11 +3,15 @@ import sys
 import os
 import json
 import base64
+import aiohttp
 from PIL import Image
 
 from vastai import Worker, WorkerConfig, HandlerConfig, LogActionConfig, BenchmarkConfig
 from aiohttp import web, ClientResponse
 from typing import Union
+
+# Callback configuration
+CALLBACK_POST_URL = 'https://n8n.kstr.dev/webhook/vast/complete' # 여기에 콜백을 받을 URL을 입력하세요 (예: 'http://example.com/callback')
 
 async def custom_response_generator(
     client_request: web.Request,
@@ -45,6 +49,15 @@ async def custom_response_generator(
             
             if modified:
                 data_bytes = json.dumps(data).encode('utf-8')
+                
+                # CALLBACK_POST_URL이 설정되어 있으면 데이터 전송
+                if CALLBACK_POST_URL:
+                    try:
+                        async with aiohttp.ClientSession() as session:
+                            async with session.post(CALLBACK_POST_URL, json=data) as resp:
+                                print(f"[DEBUG] Callback sent to {CALLBACK_POST_URL}. Status: {resp.status}")
+                    except Exception as e:
+                        print(f"[DEBUG] Failed to send callback: {str(e)}")
         else:
             print(f"[DEBUG] 'output' list not found or not a list.")
             
