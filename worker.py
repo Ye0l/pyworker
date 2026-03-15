@@ -78,7 +78,7 @@ worker_config = WorkerConfig(
     model_healthcheck_url=MODEL_HEALTHCHECK_ENDPOINT,
     handlers=[
         HandlerConfig(
-            route="/generate/sync",
+            route="/generate",
             allow_parallel_requests=False,
             max_queue_time=300.0,
             response_generator=custom_response_generator,
