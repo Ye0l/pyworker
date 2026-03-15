@@ -82,9 +82,9 @@ worker_config = WorkerConfig(
             allow_parallel_requests=False,
             max_queue_time=300.0,
             response_generator=custom_response_generator,
-            benchmark_config=BenchmarkConfig(
-                dataset=benchmark_dataset,
-            )
+            # benchmark_config=BenchmarkConfig(
+            #     dataset=benchmark_dataset,
+            # )
         )
     ],
     log_action_config=LogActionConfig(
