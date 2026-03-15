@@ -10,7 +10,7 @@ async def custom_response_generator(
     model_response: ClientResponse,
 ) -> Union[web.Response, web.StreamResponse]:
     data = await model_response.read()
-    print("debug!", data)
+    print("debug!", data.output)
     return web.Response(
         body=data,
         status=model_response.status,
