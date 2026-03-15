@@ -1,5 +1,9 @@
 import random
 import sys
+import os
+import json
+import base64
+from PIL import Image
 
 from vastai import Worker, WorkerConfig, HandlerConfig, LogActionConfig, BenchmarkConfig
 from aiohttp import web, ClientResponse
@@ -9,9 +13,30 @@ async def custom_response_generator(
     client_request: web.Request,
     model_response: ClientResponse,
 ) -> Union[web.Response, web.StreamResponse]:
-    data = await model_response.read()
+    data_bytes = await model_response.read()
+    
+    try:
+        data = json.loads(data_bytes)
+        if isinstance(data, dict) and 'local_path' in data:
+            original_path = data['local_path']
+            webp_path = os.path.splitext(original_path)[0] + '.webp'
+            
+            with Image.open(original_path) as img:
+                img.save(webp_path, format='WEBP')
+            
+            # WebP 이미지를 base64로 인코딩
+            with open(webp_path, "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+            
+            data['image'] = webp_path
+            data['image_base64'] = encoded_string
+            data_bytes = json.dumps(data).encode('utf-8')
+    except (json.JSONDecodeError, KeyError, Exception):
+        # JSON이 아니거나 에러가 발생하면 처리하지 않고 원본 데이터 전송
+        pass
+
     return web.Response(
-        body=data,
+        body=data_bytes,
         status=model_response.status,
         content_type=model_response.content_type,
         headers={"X-Worker": "my-custom-pyworker"},
