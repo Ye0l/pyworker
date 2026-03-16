@@ -642,7 +642,7 @@ benchmark_dataset = [
             },
             "inputs": {
                 "images": [
-                    "80",
+                    "199",
                     0
                 ],
                 "filename_prefix": "ServerlessImage"
@@ -695,6 +695,18 @@ benchmark_dataset = [
                 ]
             },
             "class_type": "PreviewImage"
+        }
+        "199": {
+        "_meta": {
+            "title": "Clear Cache All"
+        },
+        "inputs": {
+            "anything": [
+                "80",
+                0
+            ]
+        },
+        "class_type": "easy clearCacheAll"
         }
     }
         }
