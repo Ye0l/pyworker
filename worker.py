@@ -126,7 +126,7 @@ benchmark_dataset = [
                 "prompt": prompt,
                 "width": 512,
                 "height": 512,
-                "steps": 20,
+                "steps": 1290,
                 "seed": random.randint(0, sys.maxsize)
             }
         }
