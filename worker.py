@@ -344,25 +344,25 @@ benchmark_dataset = [
                 "drop_size": 10,
                 "scheduler": "sgm_uniform",
                 "guide_size": 512,
-                "noise_mask": true,
+                "noise_mask": True,
                 "sam_dilation": 30,
                 "sampler_name": "euler",
-                "tiled_decode": false,
-                "tiled_encode": false,
+                "tiled_decode": False,
+                "tiled_encode": False,
                 "bbox_detector": [
                     "79",
                     0
                 ],
                 "bbox_dilation": 30,
-                "force_inpaint": true,
-                "inpaint_model": false,
+                "force_inpaint": True,
+                "inpaint_model": False,
                 "sam_model_opt": [
                     "83",
                     0
                 ],
                 "sam_threshold": 0.93,
                 "bbox_threshold": 0.2,
-                "guide_size_for": true,
+                "guide_size_for": True,
                 "bbox_crop_factor": 3,
                 "noise_mask_feather": 20,
                 "sam_bbox_expansion": 0,
@@ -388,7 +388,7 @@ benchmark_dataset = [
             },
             "inputs": {
                 "negative": "chinese text, english text, black hair, worst quality, blurry, old, early, low quality, lowres, signature, username, logo, bad hands, mutated hands, ambiguous form, colored skin, unfinished, monochrome, sketch, anthro, furry, detailed background, food, bad anatomy, futa, futanari, dickgirl, girl on dick, embedding:lazy/lazyloli, embedding:lazy/lazyneg",
-                "positive": "(flat color:0.6),masterpiece,best quality,absurdres,highres,2024,2025,newest,detailed background, (riuichi:1.1),(henreader:0.7),(aoi ogata:0.7),(fujisaki hikari:0.7),(betabeet:0.5),(wlop:0.7),(yoneyama mai:0.9),NTR,3koma,4koma,speech bubbles,japanese text,<lora:blueArchiveKisaki_v10:0.8>,blue archive,kisaki (blue archive),1girl,multiple boys,muscular male,gangbang,double penetration,forced,rape,sex,deep penetration,vaginal,anal,oral,irrumatio,bukkake,excessive cum,cum on body,cum on thighs,cum on shoulders,whitish transparent semen,tears,streaming tears,flushed cheeks,sweat,drooling,saliva,black twin-tails,butterfly hair ornament,grey eyes,black china dress,torn clothing,sleeveless,exposed breasts,small breasts,black gloves,leather collar,animal collar,leash,tattooed arms,holding aloft,upright straddle,suspended,vulnerable,surrounded,from behind,hand in hair,choked,muffled cries,hotel room,dim lighting,bedside lamp,harsh light,long shadows,rumpled sheets,oppressive atmosphere,raw,domination,3koma,speech bubble,japanese text,torogao,female orgasm,shuddering,heavy breathing,wet flesh,glistening sweat,veiny penis,large penis,defined muscles,(embedding:lazy/lazypos.safetensors:0.8), (embedding:lazy/lazyhand.safetensors:0.6), embedding:lazy/lazynsfw",
+                "positive": prompt,
                 "vae_name": "Baked VAE",
                 "ckpt_name": "naiXLVpred102d_colorized.safetensors",
                 "clip_skip": -2,
@@ -676,7 +676,7 @@ benchmark_dataset = [
                 ],
                 "scale_factor": 2,
                 "scale_method": "lanczos",
-                "use_tiled_vae": false,
+                "use_tiled_vae": False,
                 "upscale_model_opt": [
                     "76",
                     0
