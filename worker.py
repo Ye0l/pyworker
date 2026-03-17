@@ -23,7 +23,7 @@ async def custom_response_generator(
     try:
         req_data = await client_request.json()
         # Body 최상단에 있거나 'input' 객체 내부에 있는 경우 모두 확인
-        target_callback_url = req_data.get('callback_url') or req_data.get('input', {}).get('callback_url') or DEFAULT_CALLBACK_URL
+        target_callback_url = req_data.get('callback_url') or req_data.get('inputs', {}).get('callback_url') or DEFAULT_CALLBACK_URL
         print(f"[DEBUG] Target Callback URL resolved to: {target_callback_url}")
     except Exception as e:
         print(f"[DEBUG] Failed to parse client request for callback_url: {e}")
