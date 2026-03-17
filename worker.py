@@ -717,8 +717,6 @@ benchmark_dataset = [
         },
         "class_type": "easy clearCacheAll"
         }
-    }
-        }
     } for prompt in benchmark_prompts
 ]
 
