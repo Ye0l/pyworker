@@ -131,9 +131,593 @@ benchmark_dataset = [
     {
         "input": {
             "request_id": f"test-{random.randint(1000, 99999)}",
-            "workflow_json": {
-                # (중략 - 기존 벤치마크 워크플로우 내용과 동일하게 유지하시면 됩니다)
-            }
+            "workflow_json":         "10": {
+            "_meta": {
+                "title": "체크포인트 로드"
+            },
+            "inputs": {
+                "ckpt_name": "animayume_v01.safetensors"
+            },
+            "class_type": "CheckpointLoaderSimple"
+        },
+        "12": {
+            "_meta": {
+                "title": "CLIP 텍스트 인코딩 (프롬프트)"
+            },
+            "inputs": {
+                "clip": [
+                    "145",
+                    1
+                ],
+                "text": prompt
+            },
+            "class_type": "CLIPTextEncode"
+        },
+        "13": {
+            "_meta": {
+                "title": "VAE 로드"
+            },
+            "inputs": {
+                "vae_name": "qwen_image_vae.safetensors"
+            },
+            "class_type": "VAELoader"
+        },
+        "14": {
+            "_meta": {
+                "title": "빈 잠재 이미지"
+            },
+            "inputs": {
+                "width": 896,
+                "height": 1152,
+                "batch_size": 1
+            },
+            "class_type": "EmptyLatentImage"
+        },
+        "15": {
+            "_meta": {
+                "title": "CLIP 텍스트 인코딩 (프롬프트)"
+            },
+            "inputs": {
+                "clip": [
+                    "145",
+                    1
+                ],
+                "text": "worst quality, low quality, score_1, score_2, score_3, blurry, jpeg artifacts, sepia, crop image, bad anatomy, furry, futanari, futa"
+            },
+            "class_type": "CLIPTextEncode"
+        },
+        "16": {
+            "_meta": {
+                "title": "VAE 디코드"
+            },
+            "inputs": {
+                "vae": [
+                    "13",
+                    0
+                ],
+                "samples": [
+                    "71",
+                    0
+                ]
+            },
+            "class_type": "VAEDecode"
+        },
+        "18": {
+            "_meta": {
+                "title": "CLIP 로드"
+            },
+            "inputs": {
+                "type": "stable_diffusion",
+                "device": "default",
+                "clip_name": "qwen_3_06b_base.safetensors"
+            },
+            "class_type": "CLIPLoader"
+        },
+        "69": {
+            "_meta": {
+                "title": "VAE 인코드"
+            },
+            "inputs": {
+                "vae": [
+                    "127",
+                    4
+                ],
+                "pixels": [
+                    "16",
+                    0
+                ]
+            },
+            "class_type": "VAEEncode"
+        },
+        "70": {
+            "_meta": {
+                "title": "KSampler (nai)"
+            },
+            "inputs": {
+                "cfg": 4.5,
+                "model": [
+                    "127",
+                    0
+                ],
+                "steps": 30,
+                "negative": [
+                    "127",
+                    2
+                ],
+                "positive": [
+                    "127",
+                    1
+                ],
+                "add_noise": "enable",
+                "scheduler": "sgm_uniform",
+                "noise_seed": random.randint(0, sys.maxsize),
+                "end_at_step": 10000,
+                "latent_image": [
+                    "69",
+                    0
+                ],
+                "sampler_name": "euler",
+                "start_at_step": 12,
+                "return_with_leftover_noise": "disable"
+            },
+            "class_type": "KSamplerAdvanced"
+        },
+        "71": {
+            "_meta": {
+                "title": "KSampler (Anima)"
+            },
+            "inputs": {
+                "cfg": 5.5,
+                "model": [
+                    "145",
+                    0
+                ],
+                "steps": 30,
+                "negative": [
+                    "15",
+                    0
+                ],
+                "positive": [
+                    "12",
+                    0
+                ],
+                "add_noise": "enable",
+                "scheduler": "sgm_uniform",
+                "noise_seed": random.randint(0, sys.maxsize),
+                "end_at_step": 12,
+                "latent_image": [
+                    "14",
+                    0
+                ],
+                "sampler_name": "euler_ancestral",
+                "start_at_step": 0,
+                "return_with_leftover_noise": "disable"
+            },
+            "class_type": "KSamplerAdvanced"
+        },
+        "76": {
+            "_meta": {
+                "title": "업스케일 모델 로드"
+            },
+            "inputs": {
+                "model_name": "2x-AnimeSharpV4_Fast_RCAN_PU.safetensors"
+            },
+            "class_type": "UpscaleModelLoader"
+        },
+        "79": {
+            "_meta": {
+                "title": "UltralyticsDetectorProvider"
+            },
+            "inputs": {
+                "model_name": "bbox/face_yolov8m.pt"
+            },
+            "class_type": "UltralyticsDetectorProvider"
+        },
+        "80": {
+            "_meta": {
+                "title": "얼굴 디테일러"
+            },
+            "inputs": {
+                "cfg": 4.5,
+                "vae": [
+                    "127",
+                    4
+                ],
+                "clip": [
+                    "127",
+                    5
+                ],
+                "seed": random.randint(0, sys.maxsize),
+                "cycle": 1,
+                "image": [
+                    "196",
+                    1
+                ],
+                "model": [
+                    "127",
+                    0
+                ],
+                "steps": 8,
+                "denoise": 0.3,
+                "feather": 5,
+                "max_size": 1536,
+                "negative": [
+                    "127",
+                    2
+                ],
+                "positive": [
+                    "127",
+                    1
+                ],
+                "wildcard": "",
+                "drop_size": 10,
+                "scheduler": "sgm_uniform",
+                "guide_size": 512,
+                "noise_mask": True,
+                "sam_dilation": 30,
+                "sampler_name": "euler",
+                "tiled_decode": False,
+                "tiled_encode": False,
+                "bbox_detector": [
+                    "79",
+                    0
+                ],
+                "bbox_dilation": 30,
+                "force_inpaint": True,
+                "inpaint_model": False,
+                "sam_model_opt": [
+                    "83",
+                    0
+                ],
+                "sam_threshold": 0.93,
+                "bbox_threshold": 0.2,
+                "guide_size_for": True,
+                "bbox_crop_factor": 3,
+                "noise_mask_feather": 20,
+                "sam_bbox_expansion": 0,
+                "sam_detection_hint": "center-1",
+                "sam_mask_hint_threshold": 0.7,
+                "sam_mask_hint_use_negative": "False"
+            },
+            "class_type": "FaceDetailer"
+        },
+        "83": {
+            "_meta": {
+                "title": "SAMLoader (Impact)"
+            },
+            "inputs": {
+                "model_name": "sam_vit_b_01ec64.pth",
+                "device_mode": "AUTO"
+            },
+            "class_type": "SAMLoader"
+        },
+        "127": {
+            "_meta": {
+                "title": "Efficient Loader"
+            },
+            "inputs": {
+                "negative": "chinese text, english text, black hair, worst quality, blurry, old, early, low quality, lowres, signature, username, logo, bad hands, mutated hands, ambiguous form, colored skin, unfinished, monochrome, sketch, anthro, furry, detailed background, food, bad anatomy, futa, futanari, dickgirl, girl on dick, embedding:lazy/lazyloli, embedding:lazy/lazyneg",
+                "positive": prompt,
+                "vae_name": "Baked VAE",
+                "ckpt_name": "naiXLVpred102d_colorized.safetensors",
+                "clip_skip": -2,
+                "lora_name": "None",
+                "batch_size": 1,
+                "lora_stack": [
+                    "128",
+                    0
+                ],
+                "empty_latent_width": 512,
+                "lora_clip_strength": 1,
+                "empty_latent_height": 512,
+                "lora_model_strength": 1,
+                "token_normalization": "none",
+                "weight_interpretation": "comfy"
+            },
+            "class_type": "Efficient Loader"
+        },
+        "128": {
+            "_meta": {
+                "title": "LoRA Stacker"
+            },
+            "inputs": {
+                "lora_wt_1": 1,
+                "lora_wt_2": 0.1,
+                "lora_wt_3": 0.4,
+                "lora_wt_4": 0.2,
+                "lora_wt_5": 0.3,
+                "lora_wt_6": 0.2,
+                "lora_wt_7": 0.2,
+                "lora_wt_8": 0.8,
+                "lora_wt_9": 1,
+                "clip_str_1": 1,
+                "clip_str_2": 1,
+                "clip_str_3": 1,
+                "clip_str_4": 1,
+                "clip_str_5": 1,
+                "clip_str_6": 1,
+                "clip_str_7": 1,
+                "clip_str_8": 1,
+                "clip_str_9": 1,
+                "input_mode": "simple",
+                "lora_count": 8,
+                "lora_wt_10": 1,
+                "lora_wt_11": 1,
+                "lora_wt_12": 1,
+                "lora_wt_13": 1,
+                "lora_wt_14": 1,
+                "lora_wt_15": 1,
+                "lora_wt_16": 1,
+                "lora_wt_17": 1,
+                "lora_wt_18": 1,
+                "lora_wt_19": 1,
+                "lora_wt_20": 1,
+                "lora_wt_21": 1,
+                "lora_wt_22": 1,
+                "lora_wt_23": 1,
+                "lora_wt_24": 1,
+                "lora_wt_25": 1,
+                "lora_wt_26": 1,
+                "lora_wt_27": 1,
+                "lora_wt_28": 1,
+                "lora_wt_29": 1,
+                "lora_wt_30": 1,
+                "lora_wt_31": 1,
+                "lora_wt_32": 1,
+                "lora_wt_33": 1,
+                "lora_wt_34": 1,
+                "lora_wt_35": 1,
+                "lora_wt_36": 1,
+                "lora_wt_37": 1,
+                "lora_wt_38": 1,
+                "lora_wt_39": 1,
+                "lora_wt_40": 1,
+                "lora_wt_41": 1,
+                "lora_wt_42": 1,
+                "lora_wt_43": 1,
+                "lora_wt_44": 1,
+                "lora_wt_45": 1,
+                "lora_wt_46": 1,
+                "lora_wt_47": 1,
+                "lora_wt_48": 1,
+                "lora_wt_49": 1,
+                "lora_wt_50": 1,
+                "clip_str_10": 1,
+                "clip_str_11": 1,
+                "clip_str_12": 1,
+                "clip_str_13": 1,
+                "clip_str_14": 1,
+                "clip_str_15": 1,
+                "clip_str_16": 1,
+                "clip_str_17": 1,
+                "clip_str_18": 1,
+                "clip_str_19": 1,
+                "clip_str_20": 1,
+                "clip_str_21": 1,
+                "clip_str_22": 1,
+                "clip_str_23": 1,
+                "clip_str_24": 1,
+                "clip_str_25": 1,
+                "clip_str_26": 1,
+                "clip_str_27": 1,
+                "clip_str_28": 1,
+                "clip_str_29": 1,
+                "clip_str_30": 1,
+                "clip_str_31": 1,
+                "clip_str_32": 1,
+                "clip_str_33": 1,
+                "clip_str_34": 1,
+                "clip_str_35": 1,
+                "clip_str_36": 1,
+                "clip_str_37": 1,
+                "clip_str_38": 1,
+                "clip_str_39": 1,
+                "clip_str_40": 1,
+                "clip_str_41": 1,
+                "clip_str_42": 1,
+                "clip_str_43": 1,
+                "clip_str_44": 1,
+                "clip_str_45": 1,
+                "clip_str_46": 1,
+                "clip_str_47": 1,
+                "clip_str_48": 1,
+                "clip_str_49": 1,
+                "clip_str_50": 1,
+                "lora_name_1": "spo_sdxl_10ep_4k-data_lora_webui.safetensors",
+                "lora_name_2": "noobaiXLNAIXL_epsilonPred11Version-lora.safetensors",
+                "lora_name_3": "il_contrast_slider_d1.safetensors",
+                "lora_name_4": "guilty_gear_strive_style_trigger_gu1lty.safetensors",
+                "lora_name_5": "benismanXL_il_lokr_V6311P.safetensors",
+                "lora_name_6": "rimixO.safetensors",
+                "lora_name_7": "realistic_cum_v1.safetensors",
+                "lora_name_8": "Lee Ha-neul prefectPonyxl.safetensors",
+                "lora_name_9": "None",
+                "model_str_1": 1,
+                "model_str_2": 1,
+                "model_str_3": 1,
+                "model_str_4": 1,
+                "model_str_5": 1,
+                "model_str_6": 1,
+                "model_str_7": 1,
+                "model_str_8": 1,
+                "model_str_9": 1,
+                "lora_name_10": "None",
+                "lora_name_11": "None",
+                "lora_name_12": "None",
+                "lora_name_13": "None",
+                "lora_name_14": "None",
+                "lora_name_15": "None",
+                "lora_name_16": "None",
+                "lora_name_17": "None",
+                "lora_name_18": "None",
+                "lora_name_19": "None",
+                "lora_name_20": "None",
+                "lora_name_21": "None",
+                "lora_name_22": "None",
+                "lora_name_23": "None",
+                "lora_name_24": "None",
+                "lora_name_25": "None",
+                "lora_name_26": "None",
+                "lora_name_27": "None",
+                "lora_name_28": "None",
+                "lora_name_29": "None",
+                "lora_name_30": "None",
+                "lora_name_31": "None",
+                "lora_name_32": "None",
+                "lora_name_33": "None",
+                "lora_name_34": "None",
+                "lora_name_35": "None",
+                "lora_name_36": "None",
+                "lora_name_37": "None",
+                "lora_name_38": "None",
+                "lora_name_39": "None",
+                "lora_name_40": "None",
+                "lora_name_41": "None",
+                "lora_name_42": "None",
+                "lora_name_43": "None",
+                "lora_name_44": "None",
+                "lora_name_45": "None",
+                "lora_name_46": "None",
+                "lora_name_47": "None",
+                "lora_name_48": "None",
+                "lora_name_49": "None",
+                "lora_name_50": "None",
+                "model_str_10": 1,
+                "model_str_11": 1,
+                "model_str_12": 1,
+                "model_str_13": 1,
+                "model_str_14": 1,
+                "model_str_15": 1,
+                "model_str_16": 1,
+                "model_str_17": 1,
+                "model_str_18": 1,
+                "model_str_19": 1,
+                "model_str_20": 1,
+                "model_str_21": 1,
+                "model_str_22": 1,
+                "model_str_23": 1,
+                "model_str_24": 1,
+                "model_str_25": 1,
+                "model_str_26": 1,
+                "model_str_27": 1,
+                "model_str_28": 1,
+                "model_str_29": 1,
+                "model_str_30": 1,
+                "model_str_31": 1,
+                "model_str_32": 1,
+                "model_str_33": 1,
+                "model_str_34": 1,
+                "model_str_35": 1,
+                "model_str_36": 1,
+                "model_str_37": 1,
+                "model_str_38": 1,
+                "model_str_39": 1,
+                "model_str_40": 1,
+                "model_str_41": 1,
+                "model_str_42": 1,
+                "model_str_43": 1,
+                "model_str_44": 1,
+                "model_str_45": 1,
+                "model_str_46": 1,
+                "model_str_47": 1,
+                "model_str_48": 1,
+                "model_str_49": 1,
+                "model_str_50": 1
+            },
+            "class_type": "LoRA Stacker"
+        },
+        "145": {
+            "_meta": {
+                "title": "LoRA 로드"
+            },
+            "inputs": {
+                "clip": [
+                    "18",
+                    0
+                ],
+                "model": [
+                    "10",
+                    0
+                ],
+                "lora_name": "anima-masterpieces-nlmix2-e41.safetensors",
+                "strength_clip": 1,
+                "strength_model": 0.9
+            },
+            "class_type": "LoraLoader"
+        },
+        "174": {
+            "_meta": {
+                "title": "이미지 저장"
+            },
+            "inputs": {
+                "images": [
+                    "199",
+                    0
+                ],
+                "filename_prefix": "ServerlessImage"
+            },
+            "class_type": "SaveImage"
+        },
+        "175": {
+            "_meta": {
+                "title": "이미지 미리보기"
+            },
+            "inputs": {
+                "images": [
+                    "16",
+                    0
+                ]
+            },
+            "class_type": "PreviewImage"
+        },
+        "196": {
+            "_meta": {
+                "title": "Latent Scale (on Pixel Space)"
+            },
+            "inputs": {
+                "vae": [
+                    "127",
+                    4
+                ],
+                "samples": [
+                    "70",
+                    0
+                ],
+                "scale_factor": 2,
+                "scale_method": "lanczos",
+                "use_tiled_vae": False,
+                "upscale_model_opt": [
+                    "76",
+                    0
+                ]
+            },
+            "class_type": "LatentPixelScale"
+        },
+        "197": {
+            "_meta": {
+                "title": "이미지 미리보기"
+            },
+            "inputs": {
+                "images": [
+                    "80",
+                    0
+                ]
+            },
+            "class_type": "PreviewImage"
+        },
+        "199": {
+        "_meta": {
+            "title": "Clear Cache All"
+        },
+        "inputs": {
+            "anything": [
+                "80",
+                0
+            ]
+        },
+        "class_type": "easy clearCacheAll"
+        }
+    }
         }
     } for prompt in benchmark_prompts
 ]
