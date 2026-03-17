@@ -726,6 +726,7 @@ worker_config = WorkerConfig(
             response_generator=custom_response_generator,
             benchmark_config=BenchmarkConfig(
                 dataset=benchmark_dataset,
+                runs=3
             )
         )
     ],
