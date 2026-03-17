@@ -11,32 +11,18 @@ from aiohttp import web, ClientResponse
 from typing import Union
 
 # 기본 Callback URL (클라이언트 요청에 callback_url이 없을 경우 사용하는 fallback)
-DEFAULT_CALLBACK_URL = 'https://n8n.kstr.dev/webhook/vast/complete' 
+CALLBACK_POST_URL = os.environ.get('CALLBACK_POST_URL', 'https://n8n.kstr.dev/webhook/vast/complete')
 
 async def custom_response_generator(
     client_request: web.Request,
     model_response: ClientResponse,
 ) -> Union[web.Response, web.StreamResponse]:
     
-    # 1. 클라이언트 요청 바디에서 동적으로 callback_url 추출
-    target_callback_url = DEFAULT_CALLBACK_URL
-    try:
-        req_data = await client_request.json()
-        # Body 최상단에 있거나 'input' 객체 내부에 있는 경우 모두 확인
-        target_callback_url = req_data.get('callback_url') or req_data.get('inputs', {}).get('callback_url') or DEFAULT_CALLBACK_URL
-        print(f"[DEBUG] Target Callback URL resolved to: {target_callback_url}")
-    except Exception as e:
-        print(f"[DEBUG] Failed to parse client request for callback_url: {e}")
-
-    # 2. 모델 응답 데이터 처리
     data_bytes = await model_response.read()
-    print(f"[DEBUG] Received data length: {len(data_bytes)}")
     
     try:
         data = json.loads(data_bytes)
-        print(f"[DEBUG] JSON parsed successfully. Keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
         
-        # 'output' 리스트를 순회하며 각 항목의 local_path 처리
         if isinstance(data, dict) and 'output' in data and isinstance(data['output'], list):
             modified = False
             for item in data['output']:
@@ -59,16 +45,14 @@ async def custom_response_generator(
                     else:
                         print(f"[DEBUG] ERROR: File not found at {original_path}")
             
-            if modified:
-                # 3. 추출된 대상 URL로 원본 데이터(base64 포함) 전송
-                if target_callback_url:
-                    try:
-                        async with aiohttp.ClientSession() as session:
-                            async with session.post(target_callback_url, json=data) as resp:
-                                print(f"[DEBUG] Callback sent to {target_callback_url}. Status: {resp.status}")
-                    except Exception as e:
-                        print(f"[DEBUG] Failed to send callback: {str(e)}")
-                
+            if modified and CALLBACK_POST_URL:  # 환경변수로 잡힌 URL이 있을 때만 실행
+                try:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.post(CALLBACK_POST_URL, json=data) as resp:
+                            print(f"[DEBUG] Callback sent to {CALLBACK_POST_URL}. Status: {resp.status}")
+                except Exception as e:
+                    print(f"[DEBUG] Failed to send callback: {str(e)}")
+
                 # 4. 클라이언트 응답용 데이터에서 base64 제거 (용량 최적화)
                 for item in data['output']:
                     if isinstance(item, dict) and 'image_base64' in item:
