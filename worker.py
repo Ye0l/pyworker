@@ -13,6 +13,7 @@ from typing import Union
 
 # 기본 Callback URL (클라이언트 요청에 callback_url이 없을 경우 사용하는 fallback)
 CALLBACK_POST_URL = os.environ.get('CALLBACK_POST_URL', 'https://n8n.kstr.dev/webhook/vast/complete')
+CF_AUTH_KEY = os.environ.get('CF_AUTH_KEY')
 
 async def custom_response_generator(
     client_request: web.Request,
@@ -131,7 +132,7 @@ benchmark_dataset = []
 if BENCHMARK_WORKFLOW_URL:
     try:
         print(f"[INFO] Fetching benchmark workflow from: {BENCHMARK_WORKFLOW_URL}")
-        req = urllib.request.Request(BENCHMARK_WORKFLOW_URL, headers={'Accept': 'application/json'})
+        req = urllib.request.Request(BENCHMARK_WORKFLOW_URL, headers={'Accept': 'application/json', 'x-kstr-passport': CF_AUTH_KEY})
         with urllib.request.urlopen(req) as response:
             resp_data = json.loads(response.read().decode('utf-8'))
         
