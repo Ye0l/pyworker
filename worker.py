@@ -173,7 +173,7 @@ worker_config = WorkerConfig(
                 dataset=benchmark_dataset,
                 runs=1
             ),
-            workload_calculator= lambda _ : 200.0
+            workload_calculator= lambda _ : 400.0
         )
     ],
     log_action_config=LogActionConfig(
