@@ -1,3 +1,4 @@
 vastai-sdk>=0.3.0
 Pillow
 aiohttp
+olefile
