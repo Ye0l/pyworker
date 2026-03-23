@@ -171,8 +171,9 @@ worker_config = WorkerConfig(
             response_generator=custom_response_generator,
             benchmark_config=BenchmarkConfig(
                 dataset=benchmark_dataset,
-                runs=3
-            )
+                runs=1
+            ),
+            workload_calculator= lambda _ : 500.0
         )
     ],
     log_action_config=LogActionConfig(
